@@ -2,7 +2,7 @@
 from __future__ import print_function
 import gzip
 import os
-import urllib
+import urllib.request
 
 import numpy
 
@@ -15,7 +15,7 @@ def maybe_download(filename, work_directory):
     os.mkdir(work_directory)
   filepath = os.path.join(work_directory, filename)
   if not os.path.exists(filepath):
-    filepath, _ = urllib.urlretrieve(SOURCE_URL + filename, filepath)
+    filepath, _ = urllib.request.urlretrieve(SOURCE_URL + filename, filepath)
     statinfo = os.stat(filepath)
     print('Succesfully downloaded', filename, statinfo.st_size, 'bytes.')
   return filepath
@@ -150,7 +150,7 @@ class SemiDataSet(object):
         y = numpy.array([numpy.arange(10)[l==1][0] for l in labels])
         idx = indices[y==0][:5]
         n_classes = y.max() + 1
-        n_from_each_class = n_labeled / n_classes
+        n_from_each_class = n_labeled // n_classes
         i_labeled = []
         for c in range(n_classes):
             i = indices[y==c][:n_from_each_class]
